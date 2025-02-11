@@ -6,23 +6,28 @@ function adicionar() {
     let nomeAmigo = document.getElementById('nome-amigo');
     let amigosCaixa = document.getElementById('lista-amigos')
 
-    if (nomeAmigo !== '') {
-        //* guardando amigos
-        amigos.push(nomeAmigo.value)
-
-        //* colocando na tela
-        if(amigosCaixa.textContent == ''){
-            amigosCaixa.textContent = nomeAmigo.value
-        }else{
-            amigosCaixa.textContent = amigosCaixa.textContent + ', ' + nomeAmigo.value;
-        }
-    }else{
+    if (nomeAmigo == '') {
         alert('Campos vazios não são permitidos')
+        return
     }
 
-   nomeAmigo.value = '';
-   atualizarLista();
-   atualizarSorteio();
+   
+
+    if (amigos.includes(nomeAmigo.value)) {
+        alert('Nome já adicionado');
+        return;
+    }
+     amigos.push(nomeAmigo.value)
+    //* colocando na tela
+    if (amigosCaixa.textContent == '') {
+        amigosCaixa.textContent = nomeAmigo.value
+    } else {
+        amigosCaixa.textContent = amigosCaixa.textContent + ', ' + nomeAmigo.value;
+    }
+
+    nomeAmigo.value = '';
+    atualizarLista();
+    atualizarSorteio();
 
 }
 
@@ -36,8 +41,11 @@ function embaralhar(lista) {
 
 
 function sortear() {
-
     embaralhar(amigos);
+    if (amigos.length <= 4) {
+        alert('Adicione pelo menos 4 amigos')
+        return
+    }
     let sorteio = document.getElementById('lista-sorteio');
     for (let i = 0; i < amigos.length; i++) {
         if (i == amigos.length - 1) {
@@ -48,28 +56,28 @@ function sortear() {
     }
 
 }
-function excluirAmigo (index) { 
+function excluirAmigo(index) {
     //? O método splice em JavaScript é bastante útil para manipular arrays. Ele permite adicionar, remover ou substituir elementos em um array
     amigos.splice(index, 1);
     atualizarLista();
     atualizarSorteio();
- }
+}
 
-function atualizarSorteio(){
+function atualizarSorteio() {
     let sorteio = document.getElementById('lista-sorteio')
     sorteio.innerHTML = '';
 }
-function atualizarLista(){
+function atualizarLista() {
     let lista = document.getElementById('lista-amigos');
     lista.innerHTML = '';
 
-    for(let i = 0; i < amigos.length; i++){
+    for (let i = 0; i < amigos.length; i++) {
         //? Cria um elemnto de parágrafo para cada amigo
         let paragrafo = document.createElement('p');
         paragrafo.textContent = amigos[i];
 
         //? Adiciona um evento de clique para excluir o amigo
-        paragrafo.addEventListener('click', function(){
+        paragrafo.addEventListener('click', function () {
             excluirAmigo(i);
         });
 
